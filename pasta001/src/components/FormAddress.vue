@@ -29,11 +29,11 @@ export default {
   props: { wizardData: { type: Object, required: true } },
   data() {
     return {
-      form: { address: null, recipient: this.wizardData.name }
+      form: { address: null, recipient: this.wizardData.nome }
     }
   },
   activated() {
-    this.form.recipient = this.wizardData.name;
+    this.form.recipient = this.wizardData.nome;
   },
   validations: {
     form: { 

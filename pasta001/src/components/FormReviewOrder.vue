@@ -11,11 +11,11 @@
 
       <div class="plans">
         <div class="plan active-plan">
-          <div class="weight">{{ wizardData.plan.weight }}</div>
+          <div class="weight">{{ wizardData.plano.weight }}</div>
 
           <div class="description">
-            <span class="title">{{ wizardData.plan.name }}</span>
-            <span class="description">{{ wizardData.plan.description }}</span>
+            <span class="title">{{ wizardData.plano.name }}</span>
+            <span class="description">{{ wizardData.plano.description }}</span>
           </div>
 
           <div class="price">
@@ -67,7 +67,7 @@ export default {
       },
       computed: {
         totalPrice() {
-            let total = this.wizardData.plan.price;
+            let total = this.wizardData.plano.price;
             if (this.form.chocolate) {
               total += 4;
             }
