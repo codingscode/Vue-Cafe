@@ -1,14 +1,14 @@
 <template>
   <div id="app" class="container mx-auto py-6">
-    <header>
-      <div>
-        <span id="logo">Café da Serra</span>
-      </div>
-    </header>
+      <header>
+        <div>
+          <span id="logo">Café da Serra</span>
+        </div>
+      </header>
 
-    <div class="content">
-      <FormWizard />
-    </div>
+      <div class="content">
+        <FormWizard />
+      </div>
   </div>
 </template>
 
@@ -16,9 +16,8 @@
 import FormWizard from "./components/FormWizard.vue";
 
 export default {
-  name: "app",
-  components: {
-    FormWizard
-  }
+      name: "app",
+      components: { FormWizard }
 };
+
 </script>

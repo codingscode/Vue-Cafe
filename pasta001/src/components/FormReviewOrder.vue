@@ -57,44 +57,35 @@
 </template>
 
 <script>
+
 export default {
-  props: {
-    wizardData: {
-      type: Object,
-      required: true
-    }
-  },
-  data() {
-    return {
-      form: {
-        chocolate: false,
-        otherTreat: false
+      props: { wizardData: { type: Object, required: true } },
+      data() {
+        return {
+          form: { chocolate: false, otherTreat: false }
+        };
+      },
+      computed: {
+        totalPrice() {
+            let total = this.wizardData.plan.price;
+            if (this.form.chocolate) {
+              total += 4;
+            }
+            if (this.form.otherTreat) {
+              total += 2;
+            }
+            return total;
+        }
+      },
+      validations: {},
+      methods: {
+          submit() {
+              return Promise.resolve({ chocolate: this.form.chocolate, otherTreat: this.form.otherTreat });
+          }
       }
-    };
-  },
-  computed: {
-    totalPrice() {
-      let total = this.wizardData.plan.price;
-      if (this.form.chocolate) {
-        total += 4;
-      }
-      if (this.form.otherTreat) {
-        total += 2;
-      }
-      return total;
-    }
-  },
-  validations: {},
-  methods: {
-    submit() {
-      return Promise.resolve({
-        chocolate: this.form.chocolate,
-        otherTreat: this.form.otherTreat
-      });
-    }
-  }
 };
 </script>
 
 <style scoped>
+
 </style>

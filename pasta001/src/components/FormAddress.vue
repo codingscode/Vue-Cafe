@@ -6,27 +6,17 @@
 
     <form class="form">
       <div class="form-group">
-        <label class="form-label" for="delivery_name">Nome</label>
-        <input
-          v-model="$v.form.recipient.$model"
-          type="text"
-          placeholder="Nome do destinatário"
-          class="form-control"
-          id="delivery_name"
-        />
-        <div v-if="$v.form.recipient.$error" class="error">Este campo é obrigatório</div>
+          <label class="form-label" for="delivery_name">Nome</label>
+          <input v-model="$v.form.recipient.$model" type="text" placeholder="Nome do destinatário" class="form-control" id="delivery_name" />
+          <div v-if="$v.form.recipient.$error" class="error">Este campo é obrigatório</div>
       </div>
 
       <div class="form-group">
-        <label class="form-label" for="address">Endereço</label>
-        <textarea
-          v-model="$v.form.address.$model"
-          placeholder="Rua da Estrela, Bairro do Centro - Santa Maria - SP"
-          rows="3"
-          class="form-control"
-          id="address"
-        ></textarea>
-        <div v-if="$v.form.address.$error" class="error">Este campo é obrigatório</div>
+          <label class="form-label" for="address">Endereço</label>
+          <textarea v-model="$v.form.address.$model" placeholder="Rua da Estrela, Bairro do Centro - Santa Maria - SP" rows="3"
+              class="form-control" id="address">
+          </textarea>
+          <div v-if="$v.form.address.$error" class="error">Este campo é obrigatório</div>
       </div>
     </form>
   </div>
@@ -34,51 +24,42 @@
 
 <script>
 import { required } from "vuelidate/lib/validators";
+
 export default {
-  props: {
-    wizardData: {
-      type: Object,
-      required: true
-    }
-  },
+  props: { wizardData: { type: Object, required: true } },
   data() {
     return {
-      form: {
-        address: null,
-        recipient: this.wizardData.name
-      }
-    };
+      form: { address: null, recipient: this.wizardData.name }
+    }
   },
   activated() {
     this.form.recipient = this.wizardData.name;
   },
   validations: {
-    form: {
-      address: {
-        required
-      },
-      recipient: {
-        required
-      }
+    form: { 
+      address: { required },
+      recipient: { required }
     }
   },
   methods: {
-    submit() {
-      this.$v.$touch();
-      return new Promise((resolve, reject) => {
-        if (!this.$v.$invalid) {
-          resolve({
-            address: this.form.address,
-            recipient: this.form.recipient
-          });
-        } else {
-          reject("invalid address");
-        }
-      });
-    }
+      submit() {
+        this.$v.$touch()
+        return new Promise((resolve, reject) => {
+            if (!this.$v.$invalid) {
+              resolve({
+                address: this.form.address,
+                recipient: this.form.recipient
+              })
+            }
+            else {
+              reject("invalid address")
+            }
+        })
+      }
   }
-};
+}
 </script>
 
 <style scoped>
+
 </style>
