@@ -17,12 +17,12 @@
       </div>
 
       <div v-if="emailCheckedInDB" class="form-group">
-          <label class="form-label" for="password">Senha</label>
-          <input v-model="$v.form.password.$model" type="password" placeholder="Senha super secreta" class="form-control" id="password" />
-          <div v-if="$v.form.password.$error && !$v.form.password.required" class="error" >
-            A senha é obrigatório
+          <label class="form-label" for="senha">Senha</label>
+          <input v-model="$v.form.senha.$model" type="senha" placeholder="Senha super secreta" class="form-control" id="senha" />
+          <div v-if="$v.form.senha.$error && !$v.form.senha.required" class="error" >
+              A senha é obrigatório
           </div>
-          <div v-if="$v.form.password.$error && !$v.form.password.correct" class="error" >
+          <div v-if="$v.form.senha.$error && !$v.form.senha.correct" class="error" >
             Senha inválida tente novamente
           </div>
       </div>
@@ -34,21 +34,21 @@
       </div>
     </form>
     <div v-else class="text-center">
-      Logado com sucesso!
-      <a href="#" @click="reset">Não é {{form.name}}?</a>
+          Logado com sucesso!
+          <a href="#" @click="reset">Não é {{form.name}}?</a>
     </div>
   </div>
 </template>
 
 <script>
 
-import { authenticateUser, checkIfUserExistsInDB } from "../api/index";
+import { autenticarUsuario, verUsuarioPresentenoDB } from "../api/index";
 import { required, email } from "vuelidate/lib/validators";
 
 export default {
   data() {
       return {
-        form: { email: null, password: null, name: null },
+        form: { email: null, senha: null, name: null },
         emailCheckedInDB: false,
         existingUser: false,
         wrongPassword: false
@@ -62,7 +62,7 @@ export default {
   validations: {
     form: {
         email: { required, email },
-        password: {
+        senha: {
             required,
             correct() {
               return !this.wrongPassword;
@@ -75,7 +75,7 @@ export default {
         checkIfUserExists() {
           if (!this.$v.form.email.$invalid) {
               this.$emit("updateAsyncState", "pending");
-              return checkIfUserExistsInDB(this.form.email)
+              return verUsuarioPresentenoDB(this.form.email)
                 .then(() => {
                   // User exists
                   this.existingUser = true;
@@ -96,11 +96,11 @@ export default {
 
         login() {
           this.wrongPassword = false;
-          if (!this.$v.form.password.$invalid) {
+          if (!this.$v.form.senha.$invalid) {
             this.$emit("updateAsyncState", "pending");
-            return authenticateUser(this.form.email, this.form.password)
-              .then(user => {
-                this.form.name = user.name;
+            return autenticarUsuario(this.form.email, this.form.senha)
+              .then(usuario => {
+                this.form.name = usuario.name;
                 this.$emit("updateAsyncState", "success");
               })
               .catch(() => {
@@ -108,13 +108,13 @@ export default {
                 this.$emit("updateAsyncState", "success");
               });
           } else {
-            return Promise.reject("password is invalid");
+            return Promise.reject("senha is invalid");
           }
         },
 
         reset() {
           this.form.email = null;
-          this.form.password = null;
+          this.form.senha = null;
           this.form.name = null;
           this.emailCheckedInDB = false;
           this.wrongPassword = false;
@@ -130,7 +130,7 @@ export default {
           }
           else {
             if (this.existingUser && !this.loggedIn) {
-              this.$v.form.password.$touch();
+              this.$v.form.senha.$touch();
               job = this.login();
             }
             else {
@@ -144,7 +144,7 @@ export default {
                   if (!this.$v.$invalid) {
                     resolve({
                       email: this.form.email,
-                      password: this.form.password,
+                      senha: this.form.senha,
                       name: this.form.name
                     });
                   } else {
@@ -157,7 +157,7 @@ export default {
           // this.$emit("update", {
           //   data: {
           //     email: this.form.email,
-          //     password: this.form.password,
+          //     senha: this.form.senha,
           //     name: this.form.name
           //   },
           //   valid: !this.$v.$invalid

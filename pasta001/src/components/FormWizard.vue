@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { postFormToDB } from "../api/index";
+import { postFormParaDB } from "../api/index";
 import FormPlanPicker from "./FormPlanPicker";
 import FormUserDetails from "./FormUserDetails";
 import FormAddress from "./FormAddress";
@@ -48,7 +48,7 @@ export default {
         currentStepNumber: 1, 
         asyncState: null,
         steps: [ "FormPlanPicker", "FormUserDetails", "FormAddress", "FormReviewOrder" ],
-        form: { plano: null, email: null, nome: null, password: null, address: null, recipient: null, chocolate: false, otherTreat: false }
+        form: { plano: null, email: null, nome: null, senha: null, endereco: null, recipient: null, chocolate: false, outroTratamento: false }
     };
   },
   computed: {
@@ -74,7 +74,7 @@ export default {
         },
         submitOrder() {
           this.asyncState = "pending";
-          postFormToDB(this.form).then(() => {
+          postFormParaDB(this.form).then(() => {
               console.log("ok");
               this.currentStepNumber++;
               this.asyncState = "success";

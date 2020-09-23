@@ -12,11 +12,11 @@
       </div>
 
       <div class="form-group">
-          <label class="form-label" for="address">Endereço</label>
-          <textarea v-model="$v.form.address.$model" placeholder="Rua da Estrela, Bairro do Centro - Santa Maria - SP" rows="3"
-              class="form-control" id="address">
+          <label class="form-label" for="endereco">Endereço</label>
+          <textarea v-model="$v.form.endereco.$model" placeholder="Rua da Estrela, Bairro do Centro - Santa Maria - SP" rows="3"
+              class="form-control" id="endereco">
           </textarea>
-          <div v-if="$v.form.address.$error" class="error">Este campo é obrigatório</div>
+          <div v-if="$v.form.endereco.$error" class="error">Este campo é obrigatório</div>
       </div>
     </form>
   </div>
@@ -29,7 +29,7 @@ export default {
   props: { wizardData: { type: Object, required: true } },
   data() {
     return {
-      form: { address: null, recipient: this.wizardData.nome }
+      form: { endereco: null, recipient: this.wizardData.nome }
     }
   },
   activated() {
@@ -37,7 +37,7 @@ export default {
   },
   validations: {
     form: { 
-      address: { required },
+      endereco: { required },
       recipient: { required }
     }
   },
@@ -47,12 +47,12 @@ export default {
         return new Promise((resolve, reject) => {
             if (!this.$v.$invalid) {
               resolve({
-                address: this.form.address,
+                endereco: this.form.endereco,
                 recipient: this.form.recipient
               })
             }
             else {
-              reject("invalid address")
+              reject("invalid endereco")
             }
         })
       }

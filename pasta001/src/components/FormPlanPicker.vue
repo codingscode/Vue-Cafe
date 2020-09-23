@@ -10,7 +10,7 @@
               <div class="weight">{{ plano.weight }}</div>
               <div class="description">
                 <span class="title">{{ plano.nome }}</span>
-                <span class="description">{{ plano.description }}</span>
+                <span class="description">{{ plano.descricao }}</span>
               </div>
               <div class="price">
                 <span class="dollar-sign">R$</span>
@@ -29,9 +29,9 @@ export default {
   data() {
         return {
           plans: [
-                { price: 19, weight: "250g", nome: "Básico", description: "Um saco de grãos de café torrados na hora entregues em sua casa todos os meses" },
-                { price: 29, weight: "500g", nome: "Curioso", description: "Dois tipos diferentes de café recém-torrado todos os meses" },
-                { price: 49, weight: "1kg", nome: "Viciado", description: "Dois sacos de dois tipos diferentes de café recém-torrado todos os meses." }
+                { price: 19, weight: "250g", nome: "Básico", descricao: "Um saco de grãos de café torrados na hora entregues em sua casa todos os meses" },
+                { price: 29, weight: "500g", nome: "Curioso", descricao: "Dois tipos diferentes de café recém-torrado todos os meses" },
+                { price: 49, weight: "1kg", nome: "Viciado", descricao: "Dois sacos de dois tipos diferentes de café recém-torrado todos os meses." }
           ],
           selectedPlan: null
         }
