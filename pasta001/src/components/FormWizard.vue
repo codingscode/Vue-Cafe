@@ -2,17 +2,17 @@
   <div>
         <div v-if="wizardInProgress" v-show="asyncState !== 'pending'">
             <keep-alive>
-              <component ref="currentStep" :is="currentStep" @updateAsyncState="updateAsyncState" :wizardData="form" ></component>
+                <component ref="importAtual" :is="importAtual" @updateAsyncState="updateAsyncState" :wizardData="form" ></component>
             </keep-alive>
             <div class="progress-bar">
-              <div :style="`width: ${progress}%;`"></div>
+                <div :style="`width: ${progresso}%;`"></div>
             </div>
 
             <!-- Actions -->
             <div class="buttons">
-                <button @click="goBack" v-if="currentStepNumber > 1" class="btn-outlined">Voltar</button>
-                <button @click="nextButtonAction" class="btn" >
-                  {{ isLastStep ? 'Completar Pedido' : 'Avançar' }}
+                <button @click="goBack" v-if="numeroImportAtual > 1" class="btn-outlined">Voltar</button>
+                <button @click="botaoProximaAcao" class="btn" >
+                  {{ eUltimoImport ? 'Completar Pedido' : 'Avançar' }}
                 </button>
             </div>
         </div>
@@ -21,7 +21,7 @@
         <h2 class="subtitle">Estamos ansiosos para enviar sua primeira caixa!</h2>
 
         <p class="text-center">
-          <a href="#" target="_blank" class="btn">Vá a algum lugar legal</a>
+           <a href="#" target="_blank" class="btn">Vá a algum lugar legal</a>
         </p>
     </div>
     <div class="loading-wrapper" v-if="asyncState === 'pending'">
@@ -44,48 +44,48 @@ export default {
   name: "FormWizard",
   components: { FormPlanPicker, FormUserDetails, FormAddress, FormReviewOrder },
   data() {
-    return {
-        currentStepNumber: 1, 
-        asyncState: null,
-        steps: [ "FormPlanPicker", "FormUserDetails", "FormAddress", "FormReviewOrder" ],
-        form: { plano: null, email: null, nome: null, senha: null, endereco: null, recipient: null, chocolate: false, outroTratamento: false }
-    };
+        return {
+            numeroImportAtual: 1, 
+            asyncState: null,
+            imports: [ "FormPlanPicker", "FormUserDetails", "FormAddress", "FormReviewOrder" ],
+            form: { plano: null, email: null, nome: null, senha: null, endereco: null, recipient: null, chocolate: false, outroTratamento: false }
+        };
   },
   computed: {
-      isLastStep() {
-        return this.currentStepNumber === this.length;
+      eUltimoImport() {  // é-ultimo-import
+          return this.numeroImportAtual === this.comprimento
       },
       wizardInProgress() {
-        return this.currentStepNumber <= this.length;
+          return this.numeroImportAtual <= this.comprimento
       },
-      currentStep() {
-        return this.steps[this.currentStepNumber - 1];
+      importAtual() {
+          return this.imports[this.numeroImportAtual - 1]
       },
-      length() {
-        return this.steps.length;
+      comprimento() {
+          return this.imports.length
       },
-      progress() {
-        return (this.currentStepNumber / this.length) * 100;
+      progresso() {
+          return (this.numeroImportAtual / this.comprimento) * 100
       }
   },
   methods: {
         updateAsyncState(state) {
-          this.asyncState = state;
+            this.asyncState = state
         },
         submitOrder() {
-          this.asyncState = "pending";
-          postFormParaDB(this.form).then(() => {
-              console.log("ok");
-              this.currentStepNumber++;
-              this.asyncState = "success";
-          });
+            this.asyncState = "pending";
+            postFormParaDB(this.form).then(() => {
+                console.log("ok");
+                this.numeroImportAtual++;
+                this.asyncState = "success";
+            });
         },
-        nextButtonAction() {
-            this.$refs.currentStep
+        botaoProximaAcao() {
+            this.$refs.importAtual
               .submit()
               .then(stepData => {
                   Object.assign(this.form, stepData);
-                  if (this.isLastStep) {
+                  if (this.eUltimoImport) {
                     this.submitOrder();
                   }
                   else {
@@ -95,10 +95,10 @@ export default {
               .catch(error => console.log(error))
         },
         goBack() {
-          this.currentStepNumber--
+            this.numeroImportAtual--
         },
         goNext() {
-          this.currentStepNumber++
+            this.numeroImportAtual++
         }
   }
 };
