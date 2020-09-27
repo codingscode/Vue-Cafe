@@ -4,38 +4,38 @@
 
     <h2 class="subtitle">Crie uma conta ou faça login para solicitar sua assinatura de CoffeeBox</h2>
 
-    <form v-if="!loggedIn" class="form">
+    <form v-if="!logado" class="form">
       <div class="form-group">
         <label class="form-label" for="email">Email</label>
-        <input type="text" v-model="$v.form.email.$model" :disabled="emailCheckedInDB" placeholder="seu@email.com" class="form-control"
+        <input type="text" v-model="$v.form.email.$model" :disabled="emailChecadoNoDB" placeholder="seu@email.com" class="form-control"
                id="email" />
-        <div v-if="emailCheckedInDB" class="error info">
+        <div v-if="emailChecadoNoDB" class="error info">
           <a href="#" @click="reset">Não é você?</a>
         </div>
         <div v-if="$v.form.email.$error && !$v.form.email.required" class="error" >O email é obrigatório</div>
         <div v-if="$v.form.email.$error && !$v.form.email.email" class="error">O email é inválido</div>
       </div>
 
-      <div v-if="emailCheckedInDB" class="form-group">
+      <div v-if="emailChecadoNoDB" class="form-group">
           <label class="form-label" for="senha">Senha</label>
           <input v-model="$v.form.senha.$model" type="senha" placeholder="Senha super secreta" class="form-control" id="senha" />
           <div v-if="$v.form.senha.$error && !$v.form.senha.required" class="error" >
               A senha é obrigatório
           </div>
           <div v-if="$v.form.senha.$error && !$v.form.senha.correct" class="error" >
-            Senha inválida tente novamente
+              Senha inválida tente novamente
           </div>
       </div>
 
-      <div v-if="emailCheckedInDB && !existingUser" class="form-group">
-        <label class="form-label" for="name">Nome</label>
-        <input v-model="$v.form.name.$model" type="text" placeholder="Como gosta de ser chamado?" class="form-control" id="name" />
-        <div v-if="$v.form.name.$error" class="error">O nome é obrigatório</div>
+      <div v-if="emailChecadoNoDB && !usuarioExistente" class="form-group">
+        <label class="form-label" for="nome">Nome</label>
+        <input v-model="$v.form.nome.$model" type="text" placeholder="Como gosta de ser chamado?" class="form-control" id="nome" />
+        <div v-if="$v.form.nome.$error" class="error">O nome é obrigatório</div>
       </div>
     </form>
     <div v-else class="text-center">
           Logado com sucesso!
-          <a href="#" @click="reset">Não é {{form.name}}?</a>
+          <a href="#" @click="reset">Não é {{form.nome}}?</a>
     </div>
   </div>
 </template>
@@ -48,88 +48,89 @@ import { required, email } from "vuelidate/lib/validators";
 export default {
   data() {
       return {
-        form: { email: null, senha: null, name: null },
-        emailCheckedInDB: false,
-        existingUser: false,
-        wrongPassword: false
+          form: { email: null, senha: null, nome: null },
+          emailChecadoNoDB: false,
+          usuarioExistente: false,
+          senhaErrada: false
       };
   },
   computed: {
-    loggedIn() {
-        return this.existingUser && this.form.name;
-    }
+      logado() {
+          return this.usuarioExistente && this.form.nome;
+      }
   },
   validations: {
-    form: {
-        email: { required, email },
-        senha: {
-            required,
-            correct() {
-              return !this.wrongPassword;
-            }
-        },
-        name: { required }
-    }
+      form: {
+          email: { required, email },
+          senha: {
+              required,
+              correct() {
+                return !this.senhaErrada;
+              }
+          },
+          nome: { required }
+      }
   },
   methods: {
-        checkIfUserExists() {
-          if (!this.$v.form.email.$invalid) {
-              this.$emit("atualizarEstadoAsync", "pending");
-              return verUsuarioPresentenoDB(this.form.email)
-                .then(() => {
-                  // User exists
-                  this.existingUser = true;
-                  this.emailCheckedInDB = true;
-                  this.$emit("atualizarEstadoAsync", "success");
-                })
-                .catch(() => {
-                  // User  doesn't exist
-                  this.existingUser = false;
-                  this.emailCheckedInDB = true;
-                  this.$emit("atualizarEstadoAsync", "success");
-                });
-          }
-          else {
-            return Promise.reject("email is invalid");
-          }
+        ChecarSeUsuarioExiste() {
+            if (!this.$v.form.email.$invalid) {
+                this.$emit("atualizarEstadoAsync", "pending");
+                return verUsuarioPresentenoDB(this.form.email)
+                  .then(() => {
+                    // User exists
+                    this.usuarioExistente = true;
+                    this.emailChecadoNoDB = true;
+                    this.$emit("atualizarEstadoAsync", "success");
+                  })
+                  .catch(() => {
+                    // User  doesn't exist
+                    this.usuarioExistente = false;
+                    this.emailChecadoNoDB = true;
+                    this.$emit("atualizarEstadoAsync", "success");
+                  });
+            }
+            else {
+                return Promise.reject("email is invalid");
+            }
         },
 
         login() {
-          this.wrongPassword = false;
-          if (!this.$v.form.senha.$invalid) {
-            this.$emit("atualizarEstadoAsync", "pending");
-            return autenticarUsuario(this.form.email, this.form.senha)
-              .then(usuario => {
-                this.form.name = usuario.name;
-                this.$emit("atualizarEstadoAsync", "success");
-              })
-              .catch(() => {
-                this.wrongPassword = true;
-                this.$emit("atualizarEstadoAsync", "success");
-              });
-          } else {
-            return Promise.reject("senha is invalid");
-          }
+              this.senhaErrada = false;
+              if (!this.$v.form.senha.$invalid) {
+                  this.$emit("atualizarEstadoAsync", "pending");
+                  return autenticarUsuario(this.form.email, this.form.senha)
+                      .then(usuario => {
+                          this.form.nome = usuario.nome;
+                          this.$emit("atualizarEstadoAsync", "success");
+                      })
+                      .catch(() => {
+                          this.senhaErrada = true;
+                          this.$emit("atualizarEstadoAsync", "success");
+                      });
+              }
+              else {
+                  return Promise.reject("senha is invalid");
+              }
         },
 
         reset() {
-          this.form.email = null;
-          this.form.senha = null;
-          this.form.name = null;
-          this.emailCheckedInDB = false;
-          this.wrongPassword = false;
-          this.existingUser = false;
-          this.$v.$reset();
+            this.form.email = null;
+            this.form.senha = null;
+            this.form.nome = null;
+            this.emailChecadoNoDB = false;
+            this.senhaErrada = false;
+            this.usuarioExistente = false;
+            this.$v.$reset();
         },
 
         enviar() {
             let job;
-            if (!this.emailCheckedInDB) {
+            if (!this.emailChecadoNoDB) {
                 this.$v.form.email.$touch();
-                job = this.checkIfUserExists();
+                job = this.ChecarSeUsuarioExiste();
             }
             else {
-                if (this.existingUser && !this.loggedIn) {
+                if (this.usuarioExistente && !this.logado) {
                     this.$v.form.senha.$touch();
                     job = this.login();
                 }
@@ -142,7 +143,7 @@ export default {
             return new Promise((resolve, reject) => {
                   job.then(() => {
                       if (!this.$v.$invalid) {
-                          resolve({ email: this.form.email, senha: this.form.senha, name: this.form.name })
+                          resolve({ email: this.form.email, senha: this.form.senha, nome: this.form.nome })
                       }
                       else {
                           reject("data is not valid yet");
@@ -155,7 +156,7 @@ export default {
           //   data: {
           //     email: this.form.email,
           //     senha: this.form.senha,
-          //     name: this.form.name
+          //     nome: this.form.nome
           //   },
           //   valid: !this.$v.$invalid
           // });
