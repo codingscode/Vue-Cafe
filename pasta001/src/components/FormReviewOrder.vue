@@ -48,7 +48,7 @@
         </div>
 
         <div class="w-1/3">
-          <h3>{{ wizardData.recipient }}</h3>
+          <h3>{{ wizardData.recipiente }}</h3>
           <p class="leading-normal">{{ wizardData.endereco }}</p>
         </div>
       </div>
@@ -67,7 +67,7 @@ export default {
       },
       computed: {
           precoTotal() {
-              let total = this.wizardData.plano.price;
+              let total = this.wizardData.plano.preco;
               if (this.form.chocolate) {
                   total += 4;
               }
@@ -79,7 +79,7 @@ export default {
       },
       validations: {},
       methods: {
-          submit() {
+          enviar() {
               return Promise.resolve({ chocolate: this.form.chocolate, outroTratamento: this.form.outroTratamento });
           }
       }

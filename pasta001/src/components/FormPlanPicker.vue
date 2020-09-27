@@ -5,7 +5,7 @@
     <h2 class="subtitle">O mais genuino café, para amantes do verdadeiro sabor</h2>
 
     <div class="plans">
-          <div v-for="plano in plans" :key="plano.price" @click="pickPlan(plano)" :class="{ 'active-plan': selectedPlan === plano }"
+          <div v-for="plano in plans" :key="plano.preco" @click="pickPlan(plano)" :class="{ 'active-plan': selectedPlan === plano }"
                 class="plan" >
               <div class="weight">{{ plano.weight }}</div>
               <div class="description">
@@ -14,7 +14,7 @@
               </div>
               <div class="price">
                 <span class="dollar-sign">R$</span>
-                <span class="number">{{ plano.price }}</span>
+                <span class="number">{{ plano.preco }}</span>
               </div>
           </div>
     </div>
@@ -29,9 +29,9 @@ export default {
   data() {
         return {
           plans: [
-                { price: 19, weight: "250g", nome: "Básico", descricao: "Um saco de grãos de café torrados na hora entregues em sua casa todos os meses" },
-                { price: 29, weight: "500g", nome: "Curioso", descricao: "Dois tipos diferentes de café recém-torrado todos os meses" },
-                { price: 49, weight: "1kg", nome: "Viciado", descricao: "Dois sacos de dois tipos diferentes de café recém-torrado todos os meses." }
+                { preco: 19, weight: "250g", nome: "Básico", descricao: "Um saco de grãos de café torrados na hora entregues em sua casa todos os meses" },
+                { preco: 29, weight: "500g", nome: "Curioso", descricao: "Dois tipos diferentes de café recém-torrado todos os meses" },
+                { preco: 49, weight: "1kg", nome: "Viciado", descricao: "Dois sacos de dois tipos diferentes de café recém-torrado todos os meses." }
           ],
           selectedPlan: null
         }
@@ -41,7 +41,7 @@ export default {
         pickPlan(plano) {
           this.selectedPlan = plano
         },
-        submit() {
+        enviar() {
             this.$v.$touch()
             return new Promise((resolve, reject) => {
                 if (!this.$v.$invalid) {

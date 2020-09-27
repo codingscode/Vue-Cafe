@@ -74,19 +74,19 @@ export default {
   methods: {
         checkIfUserExists() {
           if (!this.$v.form.email.$invalid) {
-              this.$emit("updateAsyncState", "pending");
+              this.$emit("atualizarEstadoAsync", "pending");
               return verUsuarioPresentenoDB(this.form.email)
                 .then(() => {
                   // User exists
                   this.existingUser = true;
                   this.emailCheckedInDB = true;
-                  this.$emit("updateAsyncState", "success");
+                  this.$emit("atualizarEstadoAsync", "success");
                 })
                 .catch(() => {
                   // User  doesn't exist
                   this.existingUser = false;
                   this.emailCheckedInDB = true;
-                  this.$emit("updateAsyncState", "success");
+                  this.$emit("atualizarEstadoAsync", "success");
                 });
           }
           else {
@@ -97,15 +97,15 @@ export default {
         login() {
           this.wrongPassword = false;
           if (!this.$v.form.senha.$invalid) {
-            this.$emit("updateAsyncState", "pending");
+            this.$emit("atualizarEstadoAsync", "pending");
             return autenticarUsuario(this.form.email, this.form.senha)
               .then(usuario => {
                 this.form.name = usuario.name;
-                this.$emit("updateAsyncState", "success");
+                this.$emit("atualizarEstadoAsync", "success");
               })
               .catch(() => {
                 this.wrongPassword = true;
-                this.$emit("updateAsyncState", "success");
+                this.$emit("atualizarEstadoAsync", "success");
               });
           } else {
             return Promise.reject("senha is invalid");
@@ -122,37 +122,34 @@ export default {
           this.$v.$reset();
         },
 
-        submit() {
-          let job;
-          if (!this.emailCheckedInDB) {
-            this.$v.form.email.$touch();
-            job = this.checkIfUserExists();
-          }
-          else {
-            if (this.existingUser && !this.loggedIn) {
-              this.$v.form.senha.$touch();
-              job = this.login();
+        enviar() {
+            let job;
+            if (!this.emailCheckedInDB) {
+                this.$v.form.email.$touch();
+                job = this.checkIfUserExists();
             }
             else {
-              this.$v.$touch();
-              job = Promise.resolve();
+                if (this.existingUser && !this.loggedIn) {
+                    this.$v.form.senha.$touch();
+                    job = this.login();
+                }
+                else {
+                    this.$v.$touch();
+                    job = Promise.resolve();
+                }
             }
-          }
 
-          return new Promise((resolve, reject) => {
-                job.then(() => {
-                  if (!this.$v.$invalid) {
-                    resolve({
-                      email: this.form.email,
-                      senha: this.form.senha,
-                      name: this.form.name
-                    });
-                  } else {
-                    reject("data is not valid yet");
-                  }
-                })
-                .catch(error => reject(error));
-          });
+            return new Promise((resolve, reject) => {
+                  job.then(() => {
+                      if (!this.$v.$invalid) {
+                          resolve({ email: this.form.email, senha: this.form.senha, name: this.form.name })
+                      }
+                      else {
+                          reject("data is not valid yet");
+                      }
+                  })
+                  .catch(erro => reject(erro));
+            })
 
           // this.$emit("update", {
           //   data: {

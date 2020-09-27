@@ -1,8 +1,8 @@
 <template>
   <div>
-        <div v-if="wizardInProgress" v-show="asyncState !== 'pending'">
+        <div v-if="wizardInProgress" v-show="estadoAsync !== 'pending'">
             <keep-alive>
-                <component ref="importAtual" :is="importAtual" @updateAsyncState="updateAsyncState" :wizardData="form" ></component>
+                <component ref="importAtual" :is="importAtual" @atualizarEstadoAsync="atualizarEstadoAsync" :wizardData="form" ></component>
             </keep-alive>
             <div class="progress-bar">
                 <div :style="`width: ${progresso}%;`"></div>
@@ -10,7 +10,7 @@
 
             <!-- Actions -->
             <div class="buttons">
-                <button @click="goBack" v-if="numeroImportAtual > 1" class="btn-outlined">Voltar</button>
+                <button @click="voltar" v-if="numeroImportAtual > 1" class="btn-outlined">Voltar</button>
                 <button @click="botaoProximaAcao" class="btn" >
                   {{ eUltimoImport ? 'Completar Pedido' : 'Avançar' }}
                 </button>
@@ -24,7 +24,7 @@
            <a href="#" target="_blank" class="btn">Vá a algum lugar legal</a>
         </p>
     </div>
-    <div class="loading-wrapper" v-if="asyncState === 'pending'">
+    <div class="loading-wrapper" v-if="estadoAsync === 'pending'">
         <div class="loader">
             <img src="/spinner.svg" alt />
             <p>Porfavor aguarde...</p>
@@ -46,9 +46,9 @@ export default {
   data() {
         return {
             numeroImportAtual: 1, 
-            asyncState: null,
+            estadoAsync: null,
             imports: [ "FormPlanPicker", "FormUserDetails", "FormAddress", "FormReviewOrder" ],
-            form: { plano: null, email: null, nome: null, senha: null, endereco: null, recipient: null, chocolate: false, outroTratamento: false }
+            form: { plano: null, email: null, nome: null, senha: null, endereco: null, recipiente: null, chocolate: false, outroTratamento: false }
         };
   },
   computed: {
@@ -69,35 +69,35 @@ export default {
       }
   },
   methods: {
-        updateAsyncState(state) {
-            this.asyncState = state
+        atualizarEstadoAsync(state) {
+            this.estadoAsync = state
         },
-        submitOrder() {
-            this.asyncState = "pending";
+        enviarPedido() {
+            this.estadoAsync = "pending";
             postFormParaDB(this.form).then(() => {
                 console.log("ok");
                 this.numeroImportAtual++;
-                this.asyncState = "success";
+                this.estadoAsync = "success";
             });
         },
         botaoProximaAcao() {
             this.$refs.importAtual
-              .submit()
-              .then(stepData => {
-                  Object.assign(this.form, stepData);
+              .enviar()
+              .then(dadoEtapa => {
+                  Object.assign(this.form, dadoEtapa);
                   if (this.eUltimoImport) {
-                    this.submitOrder();
+                     this.enviarPedido();
                   }
                   else {
-                    this.goNext();
+                     this.avancar();
                   }
               })
-              .catch(error => console.log(error))
+              .catch(erro => console.log(erro))
         },
-        goBack() {
+        voltar() {
             this.numeroImportAtual--
         },
-        goNext() {
+        avancar() {
             this.numeroImportAtual++
         }
   }

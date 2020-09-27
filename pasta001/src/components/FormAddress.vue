@@ -7,8 +7,8 @@
     <form class="form">
       <div class="form-group">
           <label class="form-label" for="delivery_name">Nome</label>
-          <input v-model="$v.form.recipient.$model" type="text" placeholder="Nome do destinatário" class="form-control" id="delivery_name" />
-          <div v-if="$v.form.recipient.$error" class="error">Este campo é obrigatório</div>
+          <input v-model="$v.form.recipiente.$model" type="text" placeholder="Nome do destinatário" class="form-control" id="delivery_name" />
+          <div v-if="$v.form.recipiente.$error" class="error">Este campo é obrigatório</div>
       </div>
 
       <div class="form-group">
@@ -26,37 +26,31 @@
 import { required } from "vuelidate/lib/validators";
 
 export default {
-  props: { wizardData: { type: Object, required: true } },
-  data() {
-    return {
-      form: { endereco: null, recipient: this.wizardData.nome }
-    }
-  },
-  activated() {
-    this.form.recipient = this.wizardData.nome;
-  },
-  validations: {
-    form: { 
-      endereco: { required },
-      recipient: { required }
-    }
-  },
-  methods: {
-      submit() {
-        this.$v.$touch()
-        return new Promise((resolve, reject) => {
-            if (!this.$v.$invalid) {
-              resolve({
-                endereco: this.form.endereco,
-                recipient: this.form.recipient
+      props: { wizardData: { type: Object, required: true } },
+      data() {
+          return {
+             form: { endereco: null, recipiente: this.wizardData.nome }
+          }
+      },
+      activated() {
+          this.form.recipiente = this.wizardData.nome;
+      },
+      validations: {
+          form: { endereco: { required }, recipiente: { required } }
+      },
+      methods: {
+          enviar() {
+              this.$v.$touch()
+              return new Promise((resolve, reject) => {
+                  if (!this.$v.$invalid) {
+                      resolve({ endereco: this.form.endereco, recipiente: this.form.recipiente })
+                  }
+                  else {
+                      reject("Endereço Inválido")
+                  }
               })
-            }
-            else {
-              reject("invalid endereco")
-            }
-        })
+          }
       }
-  }
 }
 </script>
 
