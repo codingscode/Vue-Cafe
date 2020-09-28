@@ -1,6 +1,6 @@
 <template>
   <div>
-        <div v-if="wizardInProgress" v-show="estadoAsync !== 'pending'">
+        <div v-if="progressoAssistente" v-show="estadoAsync !== 'pending'">
             <keep-alive>
                 <component ref="importAtual" :is="importAtual" @atualizarEstadoAsync="atualizarEstadoAsync" :wizardData="form" ></component>
             </keep-alive>
@@ -27,27 +27,27 @@
     <div class="loading-wrapper" v-if="estadoAsync === 'pending'">
         <div class="loader">
             <img src="/spinner.svg" alt />
-            <p>Porfavor aguarde...</p>
+            <p>Por favor aguarde...</p>
         </div>
     </div>
   </div>
 </template>
 
 <script>
-import { postFormParaDB } from "../api/index";
-import FormPlanPicker from "./FormPlanPicker";
-import FormUserDetails from "./FormUserDetails";
-import FormAddress from "./FormAddress";
-import FormReviewOrder from "./FormReviewOrder";
+import { postFormParaDB } from "../api/index"
+import FormSelecionarPlano from "./FormSelecionarPlano"
+import FormDetalhesUsuario from "./FormDetalhesUsuario"
+import FormEndereco from "./FormEndereco"
+import FormRevisarPedido from "./FormRevisarPedido"
 
 export default {
   name: "FormWizard",
-  components: { FormPlanPicker, FormUserDetails, FormAddress, FormReviewOrder },
+  components: { FormSelecionarPlano, FormDetalhesUsuario, FormEndereco, FormRevisarPedido },
   data() {
         return {
             numeroImportAtual: 1, 
             estadoAsync: null,
-            imports: [ "FormPlanPicker", "FormUserDetails", "FormAddress", "FormReviewOrder" ],
+            imports: [ 'FormSelecionarPlano', 'FormDetalhesUsuario', 'FormEndereco', 'FormRevisarPedido' ],
             form: { plano: null, email: null, nome: null, senha: null, endereco: null, recipiente: null, chocolate: false, outroTratamento: false }
         };
   },
@@ -55,7 +55,7 @@ export default {
       eUltimoImport() {  // é-ultimo-import
           return this.numeroImportAtual === this.comprimento
       },
-      wizardInProgress() {
+      progressoAssistente() {
           return this.numeroImportAtual <= this.comprimento
       },
       importAtual() {
@@ -73,23 +73,23 @@ export default {
             this.estadoAsync = state
         },
         enviarPedido() {
-            this.estadoAsync = "pending";
+            this.estadoAsync = 'pending'
             postFormParaDB(this.form).then(() => {
-                console.log("ok");
-                this.numeroImportAtual++;
-                this.estadoAsync = "success";
-            });
+                console.log('ok')
+                this.numeroImportAtual++
+                this.estadoAsync = 'success'
+            })
         },
         botaoProximaAcao() {
             this.$refs.importAtual
               .enviar()
               .then(dadoEtapa => {
-                  Object.assign(this.form, dadoEtapa);
+                  Object.assign(this.form, dadoEtapa)
                   if (this.eUltimoImport) {
-                     this.enviarPedido();
+                     this.enviarPedido()
                   }
                   else {
-                     this.avancar();
+                     this.avancar()
                   }
               })
               .catch(erro => console.log(erro))

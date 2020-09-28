@@ -4,10 +4,10 @@ export const verUsuarioPresentenoDB = email => {
       return new Promise((resolve, reject) => {
         setTimeout(() => {
           if (email === usuario.email) {
-            resolve(true)
+             resolve(true)
           }
           else {
-            reject('usuário não encontrado')
+             reject('usuário não encontrado')
           }
         }, 1000)
       })

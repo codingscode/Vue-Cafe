@@ -7,17 +7,17 @@
       </header>
 
       <div class="content">
-        <FormWizard />
+        <FormAssistente />
       </div>
   </div>
 </template>
 
 <script>
-import FormWizard from "./components/FormWizard.vue";
+import FormAssistente from './components/FormAssistente.vue'
 
 export default {
-      name: "app",
-      components: { FormWizard }
-};
+      name: 'app',
+      components: { FormAssistente }
+}
 
 </script>
