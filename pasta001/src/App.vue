@@ -7,7 +7,7 @@
       </header>
 
       <div class="content">
-        <FormAssistente />
+         <FormAssistente />
       </div>
   </div>
 </template>

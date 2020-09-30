@@ -18,10 +18,7 @@ export const autenticarUsuario = (email, senha) => {
             console.log(email === usuario.email && senha === usuario.senha)
             setTimeout(() => {
                   if (email === usuario.email && senha === usuario.senha) {
-                      resolve({
-                        email: usuario.email,
-                        nome: usuario.nome
-                      })
+                      resolve({ email: usuario.email, nome: usuario.nome })
                   }
                   else {
                       reject('Essas credenciais não pertencem a nenhum usuário')

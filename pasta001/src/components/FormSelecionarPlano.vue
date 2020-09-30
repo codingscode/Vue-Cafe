@@ -7,7 +7,7 @@
     <div class="plans">
           <div v-for="plano in plans" :key="plano.preco" @click="pickPlan(plano)" :class="{ 'active-plan': selectedPlan === plano }"
                 class="plan" >
-              <div class="weight">{{ plano.weight }}</div>
+              <div class="weight">{{ plano.massa }}</div>
               <div class="description">
                 <span class="title">{{ plano.nome }}</span>
                 <span class="description">{{ plano.descricao }}</span>
@@ -23,15 +23,15 @@
 </template>
 
 <script>
-import { required } from "vuelidate/lib/validators";
+import { required } from 'vuelidate/lib/validators'
 
 export default {
   data() {
         return {
           plans: [
-                { preco: 19, weight: "250g", nome: "Básico", descricao: "Um saco de grãos de café torrados na hora entregues em sua casa todos os meses" },
-                { preco: 29, weight: "500g", nome: "Curioso", descricao: "Dois tipos diferentes de café recém-torrado todos os meses" },
-                { preco: 49, weight: "1kg", nome: "Viciado", descricao: "Dois sacos de dois tipos diferentes de café recém-torrado todos os meses." }
+                { preco: 19, massa: '250g', nome: 'Básico', descricao: 'Um saco de grãos de café torrados na hora entregues em sua casa todos os meses' },
+                { preco: 29, massa: '500g', nome: 'Curioso', descricao: 'Dois tipos diferentes de café recém-torrado todos os meses' },
+                { preco: 49, massa: '1kg', nome: 'Viciado', descricao: 'Dois sacos de dois tipos diferentes de café recém-torrado todos os meses.' }
           ],
           selectedPlan: null
         }
@@ -48,7 +48,7 @@ export default {
                   resolve({ plano: this.selectedPlan })
                 }
                 else {
-                  reject("Plan Not Selected")
+                  reject('Plano não selecionado')
                 }
             })
         }

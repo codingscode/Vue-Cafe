@@ -6,8 +6,8 @@
 
     <form class="form">
         <div class="form-group">
-            <label class="form-label" for="delivery_name">Nome</label>
-            <input v-model="$v.form.recipiente.$model" type="text" placeholder="Nome do destinatário" class="form-control" id="delivery_name" />
+            <label class="form-label" for="nome_entrega">Nome</label>
+            <input v-model="$v.form.recipiente.$model" type="text" placeholder="Nome do destinatário" class="form-control" id="nome_entrega" />
             <div v-if="$v.form.recipiente.$error" class="error">Este campo é obrigatório</div>
         </div>
 
@@ -26,14 +26,14 @@
 import { required } from 'vuelidate/lib/validators'
 
 export default {
-      props: { wizardData: { type: Object, required: true } },
+      props: { dadosAssistente: { type: Object, required: true } },
       data() {
           return {
-             form: { endereco: null, recipiente: this.wizardData.nome }
+             form: { endereco: null, recipiente: this.dadosAssistente.nome }
           }
       },
       activated() {
-          this.form.recipiente = this.wizardData.nome
+          this.form.recipiente = this.dadosAssistente.nome
       },
       validations: {
           form: { endereco: { required }, recipiente: { required } }

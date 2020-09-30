@@ -11,11 +11,11 @@
 
       <div class="plans">
         <div class="plan active-plan">
-          <div class="weight">{{ wizardData.plano.weight }}</div>
+          <div class="weight">{{ dadosAssistente.plano.massa }}</div>
 
           <div class="description">
-            <span class="title">{{ wizardData.plano.name }}</span>
-            <span class="description">{{ wizardData.plano.descricao }}</span>
+            <span class="title">{{ dadosAssistente.plano.name }}</span>
+            <span class="description">{{ dadosAssistente.plano.descricao }}</span>
           </div>
 
           <div class="price">
@@ -48,8 +48,8 @@
         </div>
 
         <div class="w-1/3">
-          <h3>{{ wizardData.recipiente }}</h3>
-          <p class="leading-normal">{{ wizardData.endereco }}</p>
+          <h3>{{ dadosAssistente.recipiente }}</h3>
+          <p class="leading-normal">{{ dadosAssistente.endereco }}</p>
         </div>
       </div>
     </div>
@@ -59,31 +59,31 @@
 <script>
 
 export default {
-      props: { wizardData: { type: Object, required: true } },
+      props: { dadosAssistente: { type: Object, required: true } },
       data() {
           return {
             form: { chocolate: false, outroTratamento: false }
-          };
+          }
       },
       computed: {
           precoTotal() {
-              let total = this.wizardData.plano.preco;
+              let total = this.dadosAssistente.plano.preco
               if (this.form.chocolate) {
-                  total += 4;
+                  total += 4
               }
               if (this.form.outroTratamento) {
-                  total += 2;
+                  total += 2
               }
-              return total;
+              return total
           }
       },
       validations: {},
       methods: {
           enviar() {
-              return Promise.resolve({ chocolate: this.form.chocolate, outroTratamento: this.form.outroTratamento });
+              return Promise.resolve({ chocolate: this.form.chocolate, outroTratamento: this.form.outroTratamento })
           }
       }
-};
+}
 </script>
 
 <style scoped>

@@ -1,8 +1,8 @@
 <template>
   <div>
-        <div v-if="progressoAssistente" v-show="estadoAsync !== 'pending'">
+       <div v-if="progressoAssistente" v-show="estadoAsync !== 'pendente'">
             <keep-alive>
-                <component ref="importAtual" :is="importAtual" @atualizarEstadoAsync="atualizarEstadoAsync" :wizardData="form" ></component>
+                <component ref="importAtual" :is="importAtual" @atualizarEstadoAsync="atualizarEstadoAsync" :dadosAssistente="form" ></component>
             </keep-alive>
             <div class="progress-bar">
                 <div :style="`width: ${progresso}%;`"></div>
@@ -24,7 +24,7 @@
            <a href="#" target="_blank" class="btn">Vá a algum lugar legal</a>
         </p>
     </div>
-    <div class="loading-wrapper" v-if="estadoAsync === 'pending'">
+    <div class="loading-wrapper" v-if="estadoAsync === 'pendente'">
         <div class="loader">
             <img src="/spinner.svg" alt />
             <p>Por favor aguarde...</p>
@@ -34,14 +34,14 @@
 </template>
 
 <script>
-import { postFormParaDB } from "../api/index"
-import FormSelecionarPlano from "./FormSelecionarPlano"
-import FormDetalhesUsuario from "./FormDetalhesUsuario"
-import FormEndereco from "./FormEndereco"
-import FormRevisarPedido from "./FormRevisarPedido"
+import { postFormParaDB } from '../api/index'
+import FormSelecionarPlano from './FormSelecionarPlano'
+import FormDetalhesUsuario from './FormDetalhesUsuario'
+import FormEndereco from './FormEndereco'
+import FormRevisarPedido from './FormRevisarPedido'
 
 export default {
-  name: "FormWizard",
+  name: 'FormWizard',
   components: { FormSelecionarPlano, FormDetalhesUsuario, FormEndereco, FormRevisarPedido },
   data() {
         return {
@@ -73,11 +73,11 @@ export default {
             this.estadoAsync = state
         },
         enviarPedido() {
-            this.estadoAsync = 'pending'
+            this.estadoAsync = 'pendente'
             postFormParaDB(this.form).then(() => {
                 console.log('ok')
                 this.numeroImportAtual++
-                this.estadoAsync = 'success'
+                this.estadoAsync = 'sucesso'
             })
         },
         botaoProximaAcao() {
@@ -101,5 +101,5 @@ export default {
             this.numeroImportAtual++
         }
   }
-};
+}
 </script>
