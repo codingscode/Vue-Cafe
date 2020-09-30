@@ -42,15 +42,15 @@
       </div>
 
       <div class="address">
-        <div class="w-2/3">
-          <h3>Entrega</h3>
-          <p class="description">Sua primeira caixa de CoffeeBox está ao virar da esquina</p>
-        </div>
+          <div class="w-2/3">
+            <h3>Entrega</h3>
+            <p class="description">Sua primeira caixa de CoffeeBox está ao virar da esquina</p>
+          </div>
 
-        <div class="w-1/3">
-          <h3>{{ dadosAssistente.recipiente }}</h3>
-          <p class="leading-normal">{{ dadosAssistente.endereco }}</p>
-        </div>
+          <div class="w-1/3">
+            <h3>{{ dadosAssistente.recipiente }}</h3>
+            <p class="leading-normal">{{ dadosAssistente.endereco }}</p>
+          </div>
       </div>
     </div>
   </div>
