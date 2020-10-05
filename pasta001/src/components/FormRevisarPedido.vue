@@ -11,17 +11,17 @@
 
       <div class="plans">
         <div class="plan active-plan">
-          <div class="weight">{{ dadosAssistente.plano.massa }}</div>
+            <div class="weight">{{ dadosAssistente.plano.massa }}</div>
 
-          <div class="description">
-            <span class="title">{{ dadosAssistente.plano.name }}</span>
-            <span class="description">{{ dadosAssistente.plano.descricao }}</span>
-          </div>
+            <div class="description">
+              <span class="title">{{ dadosAssistente.plano.name }}</span>
+              <span class="description">{{ dadosAssistente.plano.descricao }}</span>
+            </div>
 
-          <div class="price">
-            <span class="dollar-sign">R$</span>
-            <span class="number">{{precoTotal}}</span>
-          </div>
+            <div class="price">
+              <span class="dollar-sign">R$</span>
+              <span class="number">{{precoTotal}}</span>
+            </div>
         </div>
       </div>
 
